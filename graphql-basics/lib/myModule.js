@@ -1,0 +1,14 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.name = exports.message = exports.getGreeting = exports.default = void 0;
+const message = exports.message = "Some message from myModule.js";
+const name = exports.name = "David";
+const location = exports.default = "Madagascar";
+const getGreeting = name => {
+  return `Welcome to the course ${name}`;
+};
+exports.getGreeting = getGreeting;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJtZXNzYWdlIiwiZXhwb3J0cyIsIm5hbWUiLCJsb2NhdGlvbiIsImRlZmF1bHQiLCJnZXRHcmVldGluZyJdLCJzb3VyY2VzIjpbIi4uL3NyYy9teU1vZHVsZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJjb25zdCBtZXNzYWdlID0gXCJTb21lIG1lc3NhZ2UgZnJvbSBteU1vZHVsZS5qc1wiXG5jb25zdCBuYW1lID0gXCJEYXZpZFwiXG5jb25zdCBsb2NhdGlvbiA9IFwiTWFkYWdhc2NhclwiXG5cbmNvbnN0IGdldEdyZWV0aW5nID0gKG5hbWU6IHN0cmluZykgPT4ge1xuICByZXR1cm4gYFdlbGNvbWUgdG8gdGhlIGNvdXJzZSAke25hbWV9YFxufVxuXG5leHBvcnQgeyBtZXNzYWdlLCBuYW1lLCBnZXRHcmVldGluZywgbG9jYXRpb24gYXMgZGVmYXVsdCB9Il0sIm1hcHBpbmdzIjoiOzs7Ozs7QUFBQSxNQUFNQSxPQUFPLEdBQUFDLE9BQUEsQ0FBQUQsT0FBQSxHQUFHLCtCQUErQjtBQUMvQyxNQUFNRSxJQUFJLEdBQUFELE9BQUEsQ0FBQUMsSUFBQSxHQUFHLE9BQU87QUFDcEIsTUFBTUMsUUFBUSxHQUFBRixPQUFBLENBQUFHLE9BQUEsR0FBRyxZQUFZO0FBRTdCLE1BQU1DLFdBQVcsR0FBSUgsSUFBWSxJQUFLO0VBQ3BDLE9BQVEseUJBQXdCQSxJQUFLLEVBQUM7QUFDeEMsQ0FBQztBQUFBRCxPQUFBLENBQUFJLFdBQUEsR0FBQUEsV0FBQSJ9
