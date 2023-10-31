@@ -1,0 +1,24 @@
+{
+  "name": "graphql-basics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
+    "start": "node lib/index.js",
+    "watch:js": "nodemon lib/index.js",
+    "watch:ts": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline --watch",
+    "watch": "concurrently npm:watch:*"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-typescript": "^7.23.2",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
+  }
+}
