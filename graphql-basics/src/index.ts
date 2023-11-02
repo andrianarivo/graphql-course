@@ -1,7 +1,9 @@
 import {createSchema, createYoga} from 'graphql-yoga'
 import {createServer} from 'http'
-import {loadFiles} from "@graphql-tools/load-files";
+import {loadFiles} from "@graphql-tools/load-files"
 import {Resolvers, Post, Comment, User} from './generated/graphql'
+import { v4 as uuidv4 } from 'uuid'
+import {GraphQLError} from "graphql/error";
 
 async function main() {
 
@@ -160,6 +162,43 @@ async function main() {
         return posts.find((post) => {
           return post.id === (parent.post as unknown)
         })!
+      }
+    },
+    Mutation: {
+      createUser(parent, args, ctx, info) {
+        const emailTaken = users.some((user) => user.email === args.email)
+        if(emailTaken) {
+          throw new GraphQLError('Email taken.')
+        }
+
+        const user: User = {
+          id: uuidv4(),
+          comments: [],
+          posts: [],
+          ...args
+        }
+        users.push(user)
+
+        return user
+      },
+      createPost(parent, args, ctx, info) {
+        const userExists = users.some((user) => user.id === args.author)
+        if(!userExists) {
+          throw new GraphQLError('User not found.')
+        }
+
+        const post: Post = {
+          id: uuidv4(),
+          comments: [],
+          title: args.title,
+          body: args.body,
+          published: args.published,
+          // @ts-ignore
+          author: args.author
+        }
+        posts.push(post)
+
+        return post
       }
     }
   }
