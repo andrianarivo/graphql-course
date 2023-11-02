@@ -1,12 +1,49 @@
-import { createYoga } from 'graphql-yoga'
-import { createSchema } from 'graphql-yoga'
-import { createServer } from 'http'
+import {createSchema, createYoga} from 'graphql-yoga'
+import {createServer} from 'http'
 import {loadFiles} from "@graphql-tools/load-files";
-import {QueryGreetingArgs} from "./generated/graphql"
-import {GraphQLResolveInfo} from "graphql"
-import { Resolvers } from './generated/graphql'
+import {Resolvers} from './generated/graphql'
 
 async function main() {
+
+  // Demo user data
+  const users = [
+    {
+      id: '1',
+      name: 'Andrew',
+      email: 'andrew@example.com',
+      age: 27
+    },
+    {
+      id: '2',
+      name: 'Sarah',
+      email: 'sarah@example.com',
+    },
+    {
+      id: '3',
+      name: 'Mike',
+      email: 'mike@example.com',
+    }
+  ]
+  const posts = [
+    {
+      id: '10',
+      title: 'GraphQL 101',
+      body: 'This is how to use GraphQL...',
+      published: true
+    },
+    {
+      id: '11',
+      title: 'GraphQL 201',
+      body: 'This is an advanced GraphQL post...',
+      published: true
+    },
+    {
+      id: '12',
+      title: 'Programming Music',
+      body: '',
+      published: false
+    }
+  ]
 
   // Type definitions (schema)
   const typeDefs = await loadFiles('**/*.graphql')
@@ -14,15 +51,24 @@ async function main() {
   // Resolvers
   const resolvers: Resolvers = {
     Query: {
-      greeting(parent, args, ctx, info) {
-        if(args.name) {
-          return `Hello ${args.name}!`
-        } else {
-          return 'Hello!' // default
+      users(parent, args, ctx, info) {
+        if(!args.query) {
+          return users
         }
+        return users.filter((user) =>
+            user.name.toLowerCase().includes(args.query!.toLowerCase())
+        )
       },
-      add(_, args) {
-        return args.a + args.b
+      posts(parent, args, ctx, info) {
+        if(!args.query) {
+          return posts
+        }
+        return posts.filter((post) => {
+              const isTitleMatch = post.title.toLowerCase().includes(args.query!.toLowerCase())
+              const isBodyMatch = post.body.toLowerCase().includes(args.query!.toLowerCase())
+              return isTitleMatch || isBodyMatch
+            }
+        )
       },
       me() {
         return {

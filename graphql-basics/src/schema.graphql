@@ -1,6 +1,6 @@
 type Query {
-  greeting(name: String): String!
-  add(a: Float!, b: Float!): Float!
+  users(query: String): [User!]!
+  posts(query: String): [Post!]!
   me: User!
   post: Post!
 }
