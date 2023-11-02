@@ -1,8 +1,8 @@
 import {createSchema, createYoga} from 'graphql-yoga'
 import {createServer} from 'http'
 import {loadFiles} from "@graphql-tools/load-files"
-import {Resolvers, Post, Comment, User} from './generated/graphql'
-import { v4 as uuidv4 } from 'uuid'
+import {Comment, Post, Resolvers, User} from './generated/graphql'
+import {v4 as uuidv4} from 'uuid'
 import {GraphQLError} from "graphql/error";
 
 async function main() {
@@ -32,7 +32,7 @@ async function main() {
       comments: []
     }
   ]
-  const posts: Post[] = [
+  let posts: Post[] = [
     {
       id: '10',
       title: 'GraphQL 101',
@@ -58,7 +58,7 @@ async function main() {
       author: '3'
     }
   ]
-  const comments: Comment[] = [
+  let comments: Comment[] = [
     {
       id: '102',
       text: 'This worked well for me. Thanks!',
@@ -154,14 +154,10 @@ async function main() {
     },
     Comment: {
       author(parent, args, ctx, info) {
-        return users.find((user) => {
-          return user.id === (parent.author as unknown)
-        })!
+        return users.find((user) => user.id === (parent.author as unknown))!
       },
       post(parent, args, ctx, info) {
-        return posts.find((post) => {
-          return post.id === (parent.post as unknown)
-        })!
+        return posts.find((post) => post.id === (parent.post as unknown))!
       }
     },
     Mutation: {
@@ -180,6 +176,38 @@ async function main() {
         users.push(user)
 
         return user
+      },
+      deleteUser(parent, args, ctx, info) {
+        const userIndex = users.findIndex((user) => user.id === args.id)
+        if (userIndex === -1) {
+          throw new GraphQLError('User not found.')
+        }
+
+        const deletedUsers = users.splice(userIndex, 1)
+
+        posts = posts.filter((post) => {
+          const match = (post.author as unknown) === args.id
+
+          if(match) {
+            comments = comments.filter((comment) => (comment.post as unknown) !== post.id)
+          }
+
+          return !match
+        })
+
+        return deletedUsers[0]
+      },
+      deletePost(parent, args, ctx, info) {
+        const postIndex = posts.findIndex((post) => post.id === args.id)
+        if (postIndex === -1) {
+          throw new GraphQLError('Post not found.')
+        }
+
+        const deletedPosts = posts.splice(postIndex, 1)
+
+        comments = comments.filter((comment) => (comment.post as unknown) !== args.id)
+
+        return deletedPosts[0]
       },
       createPost(parent, args, ctx, info) {
         const userExists = users.some((user) => user.id === args.data.author)
@@ -222,6 +250,16 @@ async function main() {
         comments.push(comment)
 
         return comment
+      },
+      deleteComment(parent, args, ctx, info) {
+        const commentIndex = comments.findIndex((comment) => comment.id === args.id)
+        if (commentIndex === -1) {
+          throw new GraphQLError('Comment not found.')
+        }
+
+        const deletedComments = comments.splice(commentIndex, 1)
+
+        return deletedComments[0]
       }
     }
   }
