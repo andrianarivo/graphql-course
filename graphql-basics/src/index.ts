@@ -166,7 +166,7 @@ async function main() {
     },
     Mutation: {
       createUser(parent, args, ctx, info) {
-        const emailTaken = users.some((user) => user.email === args.email)
+        const emailTaken = users.some((user) => user.email === args.data.email)
         if(emailTaken) {
           throw new GraphQLError('Email taken.')
         }
@@ -175,14 +175,14 @@ async function main() {
           id: uuidv4(),
           comments: [],
           posts: [],
-          ...args
+          ...args.data
         }
         users.push(user)
 
         return user
       },
       createPost(parent, args, ctx, info) {
-        const userExists = users.some((user) => user.id === args.author)
+        const userExists = users.some((user) => user.id === args.data.author)
         if(!userExists) {
           throw new GraphQLError('User not found.')
         }
@@ -190,34 +190,34 @@ async function main() {
         const post: Post = {
           id: uuidv4(),
           comments: [],
-          title: args.title,
-          body: args.body,
-          published: args.published,
+          title: args.data.title,
+          body: args.data.body,
+          published: args.data.published,
           // @ts-ignore
-          author: args.author
+          author: args.data.author
         }
         posts.push(post)
 
         return post
       },
       createComment(parent, args, ctx, info) {
-        const userExists = users.some((user) => user.id === args.author)
+        const userExists = users.some((user) => user.id === args.data.author)
         if(!userExists) {
           throw new GraphQLError('User not found.')
         }
 
-        const postExists = posts.some((post) => post.id === args.post && post.published)
+        const postExists = posts.some((post) => post.id === args.data.post && post.published)
         if(!postExists) {
           throw new GraphQLError('Post not found.')
         }
 
         const comment: Comment = {
           id: uuidv4(),
-          text: args.text,
+          text: args.data.text,
           // @ts-ignore
-          post: args.post,
+          post: args.data.post,
           // @ts-ignore
-          author: args.author
+          author: args.data.author
         }
         comments.push(comment)
 
