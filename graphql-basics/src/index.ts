@@ -5,35 +5,43 @@ import { createServer } from 'http'
 // Type definitions (schema)
 const typeDefs = `
   type Query {
+    me: User!
+    post: Post!
+  }
+  
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    age: Int
+  }
+  
+  type Post {
     id: ID!
     title: String!
-    price: Float!
-    releaseYear: Int
-    rating: Float
-    inStock: Boolean!
+    body: String!
+    published: Boolean!
   }
 `
 
 // Resolvers
 const resolvers = {
   Query: {
-    id() {
-      return 'abc123'
+    me() {
+      return {
+        id: '123098',
+        name: 'Mike',
+        email: 'mike@example.com',
+        age: 28
+      }
     },
-    title() {
-      return 'The War of Art'
-    },
-    price() {
-      return 12.99
-    },
-    releaseYear() {
-      return null
-    },
-    rating() {
-      return 3.7
-    },
-    inStock() {
-      return true
+    post() {
+      return {
+        id: '092',
+        title: 'GraphQL 101',
+        body: '',
+        published: false
+      }
     }
   }
 }
