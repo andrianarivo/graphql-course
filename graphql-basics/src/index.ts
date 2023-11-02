@@ -129,42 +129,36 @@ async function main() {
     Post: {
       author(parent, args, ctx, info) {
         return users.find((user) => {
-          // @ts-ignore
-          return user.id === parent.author
+          return user.id === (parent.author as unknown)
         })!
       },
       comments(parent, args, ctx, info) {
         return comments.filter((comment) => {
-          // @ts-ignore
-          return comment.post === parent.id
+          return (comment.post as unknown) === parent.id
         })
       }
     },
     User: {
       posts(parent, args, ctx, info) {
         return posts.filter((post) => {
-          // @ts-ignore
-          return post.author === parent.id
+          return (post.author as unknown) === parent.id
         })
       },
       comments(parent, args, ctx, info) {
         return comments.filter((comment) => {
-          // @ts-ignore
-          return comment.author === parent.id
+          return (comment.author as unknown) === parent.id
         })
       }
     },
     Comment: {
       author(parent, args, ctx, info) {
         return users.find((user) => {
-          // @ts-ignore
-          return user.id === parent.author
+          return user.id === (parent.author as unknown)
         })!
       },
       post(parent, args, ctx, info) {
         return posts.find((post) => {
-          // @ts-ignore
-          return post.id === parent.post
+          return post.id === (parent.post as unknown)
         })!
       }
     }
