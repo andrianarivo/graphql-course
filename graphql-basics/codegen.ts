@@ -10,7 +10,10 @@ const config: CodegenConfig = {
         "typescript",
         "typescript-operations",
         "typescript-resolvers"
-      ]
+      ],
+      config: {
+        contextType: "../types#Context",
+      }
     }
   }
 };
