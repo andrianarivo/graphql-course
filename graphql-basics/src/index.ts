@@ -199,6 +199,29 @@ async function main() {
         posts.push(post)
 
         return post
+      },
+      createComment(parent, args, ctx, info) {
+        const userExists = users.some((user) => user.id === args.author)
+        if(!userExists) {
+          throw new GraphQLError('User not found.')
+        }
+
+        const postExists = posts.some((post) => post.id === args.post && post.published)
+        if(!postExists) {
+          throw new GraphQLError('Post not found.')
+        }
+
+        const comment: Comment = {
+          id: uuidv4(),
+          text: args.text,
+          // @ts-ignore
+          post: args.post,
+          // @ts-ignore
+          author: args.author
+        }
+        comments.push(comment)
+
+        return comment
       }
     }
   }
