@@ -5,27 +5,35 @@ import { createServer } from 'http'
 // Type definitions (schema)
 const typeDefs = `
   type Query {
-    hello: String!
-    name: String!
-    location: String!
-    bio: String!
+    id: ID!
+    title: String!
+    price: Float!
+    releaseYear: Int
+    rating: Float
+    inStock: Boolean!
   }
 `
 
 // Resolvers
 const resolvers = {
   Query: {
-    hello() {
-      return 'This is my first query!'
+    id() {
+      return 'abc123'
     },
-    name() {
-      return 'David Andrianarvio'
+    title() {
+      return 'The War of Art'
     },
-    location() {
-      return 'Madagascar'
+    price() {
+      return 12.99
     },
-    bio() {
-      return 'I am a 28 years old professional from Madagascar'
+    releaseYear() {
+      return null
+    },
+    rating() {
+      return 3.7
+    },
+    inStock() {
+      return true
     }
   }
 }
