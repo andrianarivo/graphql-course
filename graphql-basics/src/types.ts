@@ -14,4 +14,5 @@ export interface Context extends YogaInitialContext {
 export type PubSubChannels = {
   'updated:count': [count: number]
   'created:comment': [postId: string, comment: Comment]
+  'created:post': [post: Post]
 }

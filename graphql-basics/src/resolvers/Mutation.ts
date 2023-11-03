@@ -65,7 +65,7 @@ const Mutation: MutationResolvers =  {
 
     return user
   },
-  createPost(parent, args, { db }, info) {
+  createPost(parent, args, { db, pubsub }, info) {
     const userExists = db.users.some((user) => user.id === args.data.author)
     if(!userExists) {
       throw new GraphQLError('User not found.')
@@ -81,6 +81,9 @@ const Mutation: MutationResolvers =  {
       author: args.data.author
     }
     db.posts.push(post)
+    if(post.published) {
+      pubsub.publish('created:post', post)
+    }
 
     return post
   },
