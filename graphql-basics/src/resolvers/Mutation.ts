@@ -117,7 +117,7 @@ const Mutation: MutationResolvers =  {
 
     return post
   },
-  createComment(parent, args, { db }, info) {
+  createComment(parent, args, { db, pubsub }, info) {
     const userExists = db.users.some((user) => user.id === args.data.author)
     if(!userExists) {
       throw new GraphQLError('User not found.')
@@ -137,6 +137,7 @@ const Mutation: MutationResolvers =  {
       author: args.data.author
     }
     db.comments.push(comment)
+    pubsub.publish('created:comment', args.data.post, comment)
 
     return comment
   },
