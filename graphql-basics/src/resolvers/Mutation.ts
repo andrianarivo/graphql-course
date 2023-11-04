@@ -28,10 +28,10 @@ const Mutation: MutationResolvers =  {
     const deletedUsers = db.users.splice(userIndex, 1)
 
     db.posts = db.posts.filter((post) => {
-      const match = (post.author as unknown) === args.id
+      const match = (post.author as any) === args.id
 
       if(match) {
-        db.comments = db.comments.filter((comment) => (comment.post as unknown) !== post.id)
+        db.comments = db.comments.filter((comment) => (comment.post as any) !== post.id)
       }
 
       return !match
@@ -95,7 +95,7 @@ const Mutation: MutationResolvers =  {
 
     const [deletedPost] = db.posts.splice(postIndex, 1)
 
-    db.comments = db.comments.filter((comment) => (comment.post as unknown) !== args.id)
+    db.comments = db.comments.filter((comment) => (comment.post as any) !== args.id)
 
     if(deletedPost.published) {
       pubsub.publish('post', { mutation: 'DELETED', data: deletedPost })
@@ -154,21 +154,22 @@ const Mutation: MutationResolvers =  {
       author: args.data.author
     }
     db.comments.push(comment)
-    pubsub.publish('comment', args.data.post, comment)
+    pubsub.publish('comment', args.data.post, { mutation: "CREATED", data: comment })
 
     return comment
   },
-  deleteComment(parent, args, { db }, info) {
+  deleteComment(parent, args, { db, pubsub }, info) {
     const commentIndex = db.comments.findIndex((comment) => comment.id === args.id)
     if (commentIndex === -1) {
       throw new GraphQLError('Comment not found.')
     }
 
-    const deletedComments = db.comments.splice(commentIndex, 1)
+    const [deletedComment] = db.comments.splice(commentIndex, 1)
+    pubsub.publish('comment', (deletedComment.post as any), { mutation: "DELETED", data: deletedComment })
 
-    return deletedComments[0]
+    return deletedComment
   },
-  updateComment(parent, args, { db }, info) {
+  updateComment(parent, args, { db, pubsub }, info) {
     const { id, data } = args
     const comment = db.comments.find((comment) => comment.id === id)
     if(!comment) {
@@ -178,6 +179,7 @@ const Mutation: MutationResolvers =  {
     if(typeof data.text === 'string') {
       comment.text = data.text
     }
+    pubsub.publish('comment', (comment.post as any), { mutation: "UPDATED", data: comment })
 
     return comment
   }
