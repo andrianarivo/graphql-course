@@ -82,26 +82,32 @@ const Mutation: MutationResolvers =  {
     }
     db.posts.push(post)
     if(post.published) {
-      pubsub.publish('created:post', post)
+      pubsub.publish('post', { mutation: 'CREATED', data: post })
     }
 
     return post
   },
-  deletePost(parent, args, { db }, info) {
+  deletePost(parent, args, { db, pubsub }, info) {
     const postIndex = db.posts.findIndex((post) => post.id === args.id)
     if (postIndex === -1) {
       throw new GraphQLError('Post not found.')
     }
 
-    const deletedPosts = db.posts.splice(postIndex, 1)
+    const [deletedPost] = db.posts.splice(postIndex, 1)
 
     db.comments = db.comments.filter((comment) => (comment.post as unknown) !== args.id)
 
-    return deletedPosts[0]
+    if(deletedPost.published) {
+      pubsub.publish('post', { mutation: 'DELETED', data: deletedPost })
+    }
+
+    return deletedPost
   },
-  updatePost(parent, args, { db }, info) {
+  updatePost(parent, args, { db, pubsub }, info) {
     const { id, data } = args
     const post = db.posts.find((post) => post.id === id)
+    const originalPost: Post = structuredClone(post) as Post
+
     if(!post) {
       throw new GraphQLError('Post not found.')
     }
@@ -116,6 +122,14 @@ const Mutation: MutationResolvers =  {
 
     if (typeof data.published === 'boolean') {
       post.published = data.published
+
+      if(originalPost.published && !post.published) {
+        pubsub.publish('post', { mutation: 'DELETED', data: originalPost })
+      } else if(!originalPost.published && post.published) {
+        pubsub.publish('post', { mutation: 'CREATED', data: post })
+      }
+    } else if(post.published) {
+      pubsub.publish('post', { mutation: 'UPDATED', data: post })
     }
 
     return post
@@ -140,7 +154,7 @@ const Mutation: MutationResolvers =  {
       author: args.data.author
     }
     db.comments.push(comment)
-    pubsub.publish('created:comment', args.data.post, comment)
+    pubsub.publish('comment', args.data.post, comment)
 
     return comment
   },

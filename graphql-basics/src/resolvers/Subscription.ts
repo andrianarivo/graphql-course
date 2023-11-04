@@ -11,13 +11,13 @@ const Subscription: SubscriptionResolvers = {
         throw new GraphQLError('Post not found')
       }
 
-      return pubsub.subscribe('created:comment', postId)
+      return pubsub.subscribe('comment', postId)
     },
     resolve: (payload: any) => payload
   },
   post: {
     subscribe(parent, args, { pubsub}, info) {
-      return pubsub.subscribe('created:post')
+      return pubsub.subscribe('post')
     },
     resolve: (payload: any) => payload
   }

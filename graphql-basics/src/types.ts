@@ -1,4 +1,4 @@
-import {Comment, Post, User} from './generated/graphql'
+import {Comment, Post, User, PostSubscriptionPayload} from './generated/graphql'
 import {PubSub, YogaInitialContext} from "graphql-yoga";
 
 export interface Context extends YogaInitialContext {
@@ -13,6 +13,6 @@ export interface Context extends YogaInitialContext {
 
 export type PubSubChannels = {
   'updated:count': [count: number]
-  'created:comment': [postId: string, comment: Comment]
-  'created:post': [post: Post]
+  'comment': [postId: string, comment: Comment]
+  'post': [payload: PostSubscriptionPayload]
 }
