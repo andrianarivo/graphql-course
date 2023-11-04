@@ -6,11 +6,11 @@
   "scripts": {
     "build": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
     "start:prod": "node dist/index.js",
+    "start:dev": "cross-env NODE_ENV=development ts-node-dev --exit-child src/index.ts",
     "watch:nodemon": "cross-env NODE_ENV=development nodemon src/index.ts",
     "watch:codegen": "graphql-codegen --config codegen.ts --watch \"src/schema.graphql\"",
     "watch": "concurrently npm:watch:*",
-    "gen": "graphql-codegen --config codegen.ts",
-    "dev": "cross-env NODE_ENV=development ts-node-dev --exit-child --respawn src/index.ts"
+    "gen": "graphql-codegen --config codegen.ts"
   },
   "author": "",
   "license": "MIT",
