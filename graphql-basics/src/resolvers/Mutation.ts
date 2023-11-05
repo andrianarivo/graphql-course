@@ -1,6 +1,6 @@
 import {GraphQLError} from "graphql/error"
 import {v4 as uuidv4} from "uuid"
-import {MutationResolvers, User, Post, Comment} from "../generated/graphql"
+import {MutationResolvers, User, Post, Comment, MutationType} from "../generated/graphql"
 
 const Mutation: MutationResolvers =  {
   createUser(parent, args, { db }, info) {
@@ -82,7 +82,7 @@ const Mutation: MutationResolvers =  {
     }
     db.posts.push(post)
     if(post.published) {
-      pubsub.publish('post', { mutation: 'CREATED', data: post })
+      pubsub.publish('post', { mutation: MutationType.Created, data: post })
     }
 
     return post
@@ -98,7 +98,7 @@ const Mutation: MutationResolvers =  {
     db.comments = db.comments.filter((comment) => (comment.post as any) !== args.id)
 
     if(deletedPost.published) {
-      pubsub.publish('post', { mutation: 'DELETED', data: deletedPost })
+      pubsub.publish('post', { mutation: MutationType.Deleted, data: deletedPost })
     }
 
     return deletedPost
@@ -124,12 +124,12 @@ const Mutation: MutationResolvers =  {
       post.published = data.published
 
       if(originalPost.published && !post.published) {
-        pubsub.publish('post', { mutation: 'DELETED', data: originalPost })
+        pubsub.publish('post', { mutation: MutationType.Deleted, data: originalPost })
       } else if(!originalPost.published && post.published) {
-        pubsub.publish('post', { mutation: 'CREATED', data: post })
+        pubsub.publish('post', { mutation: MutationType.Created, data: post })
       }
     } else if(post.published) {
-      pubsub.publish('post', { mutation: 'UPDATED', data: post })
+      pubsub.publish('post', { mutation: MutationType.Updated, data: post })
     }
 
     return post
@@ -154,7 +154,7 @@ const Mutation: MutationResolvers =  {
       author: args.data.author
     }
     db.comments.push(comment)
-    pubsub.publish('comment', args.data.post, { mutation: "CREATED", data: comment })
+    pubsub.publish('comment', args.data.post, { mutation: MutationType.Created, data: comment })
 
     return comment
   },
@@ -165,7 +165,7 @@ const Mutation: MutationResolvers =  {
     }
 
     const [deletedComment] = db.comments.splice(commentIndex, 1)
-    pubsub.publish('comment', (deletedComment.post as any), { mutation: "DELETED", data: deletedComment })
+    pubsub.publish('comment', (deletedComment.post as any), { mutation: MutationType.Deleted, data: deletedComment })
 
     return deletedComment
   },
@@ -179,7 +179,7 @@ const Mutation: MutationResolvers =  {
     if(typeof data.text === 'string') {
       comment.text = data.text
     }
-    pubsub.publish('comment', (comment.post as any), { mutation: "UPDATED", data: comment })
+    pubsub.publish('comment', (comment.post as any), { mutation: MutationType.Updated, data: comment })
 
     return comment
   }
