@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
     "start": "node dist/index.js",
-    "watch:nodemon": "cross-env NODE_ENV=development nodemon",
+    "watch:nodemon": "cross-env NODE_ENV=development nodemon ./src/index.ts",
     "watch:codegen": "graphql-codegen --config codegen.ts --watch \"src/schema.graphql\"",
     "dev": "concurrently npm:watch:*",
     "gen": "graphql-codegen --config codegen.ts"
