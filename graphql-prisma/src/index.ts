@@ -2,51 +2,18 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient({ log: ['query']})
 
 async function main() {
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.update({
     where: {
-      age_name: {
-        age: 25,
-        name: 'Bob'
+      id: 7
+    },
+    data: {
+      email: 'test@example.com',
+      age: {
+        increment: 1
       }
     }
   })
-  const user2 = await prisma.user.findFirst({
-    where: {
-      name: 'Alice'
-    }
-  })
-  const users = await prisma.user.findMany({
-    take: 2,
-    skip: 1,
-    orderBy: {
-      age: 'asc'
-    }
-  })
-  const filteredUsers = await prisma.user.findMany({
-    where: {
-      OR: [
-        {name: { not: 'Bob' }},
-        {email: { endsWith: '.com' }}
-      ],
-      age: { lte: 20 },
-      role: { in: ["ADMIN", "BASIC"]},
-      writtenPosts: {
-        every: {
-          title: { contains: 'test'}
-        }
-      }
-    }
-  })
-  const posts = await prisma.post.findMany({
-    where: {
-      author: {
-        age: {
-          gte: 25
-        }
-      }
-    }
-  })
-  console.log(user, user2, users, filteredUsers, posts)
+  console.log(user)
 }
 
 main().catch(e => {
