@@ -2,44 +2,51 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient({ log: ['query']})
 
 async function main() {
-  await prisma.user.deleteMany()
-  const users = await prisma.user.createMany({
-    data: [{
-      name: 'Bob',
-      email: 'bob@example.com',
-      age: 25
-    }, {
-      name: 'Queen',
-      email: 'spades@card.com',
-      age: 55
-    }]
-  })
-  console.log(users)
-  const user = await prisma.user.create({
-    data: {
-      name: 'Alice',
-      email: 'alice@wonderland.com',
-      age: 14,
-      userPreference: {
-        create: {
-          emailUpdates: true,
-        }
+  const user = await prisma.user.findUnique({
+    where: {
+      age_name: {
+        age: 25,
+        name: 'Bob'
       }
-    },
-    /*include: {
-      userPreference: true,
-    }*/
-    select: {
-      id: true,
-      name: true,
-      userPreference: {
-        select: {
-          emailUpdates: true,
+    }
+  })
+  const user2 = await prisma.user.findFirst({
+    where: {
+      name: 'Alice'
+    }
+  })
+  const users = await prisma.user.findMany({
+    take: 2,
+    skip: 1,
+    orderBy: {
+      age: 'asc'
+    }
+  })
+  const filteredUsers = await prisma.user.findMany({
+    where: {
+      OR: [
+        {name: { not: 'Bob' }},
+        {email: { endsWith: '.com' }}
+      ],
+      age: { lte: 20 },
+      role: { in: ["ADMIN", "BASIC"]},
+      writtenPosts: {
+        every: {
+          title: { contains: 'test'}
         }
       }
     }
   })
-  console.log(user)
+  const posts = await prisma.post.findMany({
+    where: {
+      author: {
+        age: {
+          gte: 25
+        }
+      }
+    }
+  })
+  console.log(user, user2, users, filteredUsers, posts)
 }
 
 main().catch(e => {
