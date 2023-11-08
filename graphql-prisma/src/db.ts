@@ -1,4 +1,7 @@
 import {Comment, Post, User} from './generated/graphql'
+import {PrismaClient} from "@prisma/client"
+
+export const prisma = new PrismaClient({})
 
 const users: User[] = [
   {

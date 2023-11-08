@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="WS-232.10072.28">
+  <component name="dataSourceStorageLocal" created-in="WS-232.10203.14">
     <data-source name="blog_graphql@localhost" uuid="d7108465-bea2-4fb1-9d76-3adcaf2c1486">
       <database-info product="PostgreSQL" version="15.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="15.4" exact-driver-version="42.6">
         <identifier-quote-string>&quot;</identifier-quote-string>
