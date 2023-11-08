@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="WS-232.10203.14">
+  <component name="dataSourceStorageLocal" created-in="WS-232.10072.28">
     <data-source name="blog_graphql@localhost" uuid="d7108465-bea2-4fb1-9d76-3adcaf2c1486">
-      <database-info product="PostgreSQL" version="14.9 (Ubuntu 14.9-0ubuntu0.22.04.1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="14.9" exact-driver-version="42.6">
+      <database-info product="PostgreSQL" version="15.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="15.4" exact-driver-version="42.6">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
@@ -10,8 +10,13 @@
       <user-name>david</user-name>
       <schema-mapping>
         <introspection-scope>
-          <node kind="database" qname="@">
-            <node kind="schema" qname="@" />
+          <node negative="1">
+            <node kind="database" qname="@">
+              <node kind="schema" qname="@" />
+            </node>
+            <node kind="database" qname="blog_graphql">
+              <node kind="schema" negative="1" />
+            </node>
           </node>
         </introspection-scope>
       </schema-mapping>

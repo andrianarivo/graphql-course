@@ -11,48 +11,32 @@ datasource db {
 }
 
 model User {
-  id               Int             @id @default(autoincrement())
-  email            String          @unique
-  name             String?
-  age              Int
-  role             Role            @default(BASIC)
-  writtenPosts     Post[]          @relation("WrittenPosts")
-  favoritePosts    Post[]          @relation("FavoritedPosts")
-  userPreference   UserPreference? @relation(fields: [userPreferenceId], references: [id])
-  userPreferenceId Int?            @unique
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  name     String?
+  age      Int
+  posts    Post[]
+  comments Comment[]
 
   @@unique([age, name])
   @@index([email])
 }
 
-model UserPreference {
-  id           Int     @id @default(autoincrement())
-  emailUpdates Boolean
-  user         User?
+model Comment {
+  id       Int    @id @default(autoincrement())
+  text     String
+  post     Post   @relation(fields: [postId], references: [id])
+  postId   Int
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId Int
 }
 
 model Post {
-  id            Int        @id @default(autoincrement())
-  title         String
-  body          String?
-  averageRating Float
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  published     Boolean    @default(false)
-  author        User       @relation("WrittenPosts", fields: [authorId], references: [id])
-  authorId      Int
-  favoritedBy   User       @relation("FavoritedPosts", fields: [favoritedById], references: [id])
-  favoritedById Int
-  categories    Category[]
-}
-
-model Category {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  posts Post[]
-}
-
-enum Role {
-  BASIC
-  ADMIN
+  id        Int       @id @default(autoincrement())
+  title     String
+  body      String?
+  published Boolean   @default(false)
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  Int
+  comments  Comment[]
 }
