@@ -7,6 +7,8 @@
     "dev": "dotenv nodemon src/index.ts",
     "gen": "graphql-codegen --config codegen.ts",
     "build": "npm i && npx prisma generate",
+    "db:seed": "ts-node ./prisma/seeds.ts",
+    "db:migrate": "npx prisma migrate dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

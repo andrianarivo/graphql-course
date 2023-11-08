@@ -12,4 +12,6 @@ export const builder = new SchemaBuilder<SchemaBuilderType>({
 })
 
 builder.queryType({})
+builder.mutationType({})
+
 builder.addScalarType('Date', DateResolver, {})
