@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe51d09f-6e79-4d7a-b14f-cb2427e199a8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../graphql-prisma/src/controllers/concerns/SubscriptionEvent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../graphql-prisma/src/pubsub.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/src/builder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/src/builder.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../graphql-prisma/src/controllers/CommentsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/src/controllers/CommentsController.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../graphql-prisma/src/controllers/PostsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/src/controllers/PostsController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +57,8 @@
       <updated>1699455616420</updated>
       <workItem from="1699455617452" duration="839000" />
       <workItem from="1699460617126" duration="2280000" />
-      <workItem from="1699514156394" duration="805000" />
+      <workItem from="1699514156394" duration="3042000" />
+      <workItem from="1699539111286" duration="597000" />
     </task>
     <servers />
   </component>

@@ -1,16 +1,14 @@
-import {createYoga, createPubSub} from 'graphql-yoga'
+import {createYoga} from 'graphql-yoga'
 import {createServer} from 'http'
-import db from "./db"
-import {PubSubChannels} from "./types"
 import {schema} from "./schema"
+import { pubsub } from "./pubsub";
 
 async function main() {
 
-  const pubsub = createPubSub<PubSubChannels>()
 
   const yoga = createYoga({
     schema,
-    context: { db, pubsub },
+    context: { pubsub }
   })
 
   const server = createServer(yoga)

@@ -1,6 +1,8 @@
 import { builder } from '../builder'
 import { prisma } from '../db'
-import {GraphQLError} from "graphql/error";
+import {GraphQLError} from "graphql/error"
+import {PubSubPostEvent } from "../pubsub"
+import {SubscriptionEvent} from "./concerns/SubscriptionEvent";
 
 builder.queryField('posts', t =>
   t.prismaField({
@@ -29,7 +31,7 @@ builder.mutationField('createPost', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, context, info) => {
+    resolve: async (query, parent, args, {pubsub}, info) => {
       const userExists = await prisma.user.findUnique({
         where: {
           id: args.data.author
@@ -38,7 +40,7 @@ builder.mutationField('createPost', t =>
       if(!userExists) {
         throw new GraphQLError('User not found.')
       }
-      return prisma.post.create({
+      const post = await prisma.post.create({
         ...query,
         data: {
           title: args.data.title,
@@ -47,6 +49,12 @@ builder.mutationField('createPost', t =>
           authorId: args.data.author
         }
       })
+
+      if(post.published) {
+        pubsub.publish('post', { mutation: 'CREATED', post })
+      }
+
+      return post
     }
   })
 )
@@ -69,7 +77,7 @@ builder.mutationField('updatePost', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, context, info) => {
+    resolve: async (query, parent, args, {pubsub}, info) => {
       const originalPost = await prisma.post.findUnique({
         where: {
           id: args.id
@@ -78,7 +86,7 @@ builder.mutationField('updatePost', t =>
       if(!originalPost) {
         throw new GraphQLError('Post not found.')
       }
-      return prisma.post.update({
+      const post = await prisma.post.update({
         ...query,
         where: {
           id: args.id
@@ -86,9 +94,19 @@ builder.mutationField('updatePost', t =>
         data: {
           title: args.data.title || originalPost.title,
           body: args.data.body || originalPost.body,
-          published: args.data.published || originalPost.published
+          published: args.data.published ?? originalPost.published
         }
       })
+
+      if(originalPost.published && !post.published) {
+        pubsub.publish('post', { mutation: 'DELETED', post: originalPost })
+      } else if(!originalPost.published && post.published) {
+        pubsub.publish('post', { mutation: 'CREATED', post })
+      } else {
+        pubsub.publish('post', { mutation: 'UPDATED', post })
+      }
+
+      return post
     }
   })
 )
@@ -99,7 +117,7 @@ builder.mutationField('deletePost', t =>
     args: {
       id: t.arg.int({required: true})
     },
-    resolve: async (query, parent, args, context, info) => {
+    resolve: async (query, parent, args, { pubsub }, info) => {
       const originalPost = await prisma.post.findUnique({
         where: {
           id: args.id
@@ -108,12 +126,45 @@ builder.mutationField('deletePost', t =>
       if(!originalPost) {
         throw new GraphQLError('Post not found.')
       }
-      return prisma.post.delete({
+      const post = await prisma.post.delete({
         ...query,
         where: {
           id: args.id
         }
       })
+
+      pubsub.publish('post', { mutation: 'DELETED', post: originalPost })
+
+      return post
     }
   })
+)
+
+const SubscriptionPostEvent = builder.objectRef<PubSubPostEvent>('SubscriptionPostEvent')
+SubscriptionPostEvent.implement({
+  interfaces: [SubscriptionEvent],
+  fields: t => ({
+    post: t.prismaField({
+      type: 'Post',
+      nullable: true,
+      resolve: (query, event) => {
+        return prisma.post.findUnique({
+          where: {
+            id: event.post.id
+          }
+        })
+      }
+    })
+  })
+})
+
+builder.subscriptionField('post', t =>
+    t.field({
+      type: SubscriptionPostEvent,
+      nullable: true,
+      subscribe: (parent, args, { pubsub }, info) =>
+          pubsub.subscribe('post')
+      ,
+      resolve: (payload) => payload
+    })
 )

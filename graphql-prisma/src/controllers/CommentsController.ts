@@ -1,6 +1,8 @@
 import { builder} from "../builder";
 import {prisma} from "../db";
 import {GraphQLError} from "graphql/error";
+import {MutationType, PubSubCommentEvent, PubSubEvent} from "../pubsub";
+import {SubscriptionEvent} from "./concerns/SubscriptionEvent";
 
 builder.queryField('comments', t =>
   t.prismaField({
@@ -28,7 +30,7 @@ builder.mutationField('createComment', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, context, info) => {
+    resolve: async (query, parent, args, { pubsub }, info) => {
       const userExists = await prisma.user.findUnique({
         where: {
           id: args.data.author
@@ -45,7 +47,7 @@ builder.mutationField('createComment', t =>
       if(!postExists) {
         throw new GraphQLError('Post not found.')
       }
-      return prisma.comment.create({
+      const comment =  await prisma.comment.create({
         ...query,
         data: {
           text: args.data.text,
@@ -53,6 +55,10 @@ builder.mutationField('createComment', t =>
           postId: args.data.post
         }
       })
+
+      pubsub.publish('comment', args.data.post, { mutation: MutationType.CREATED, comment })
+
+      return comment
     }
   })
 )
@@ -73,7 +79,7 @@ builder.mutationField('updateComment', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, context, info) => {
+    resolve: async (query, parent, args, { pubsub }, info) => {
       const originalComment = await prisma.comment.findUnique({
         where: {
           id: args.id
@@ -82,7 +88,7 @@ builder.mutationField('updateComment', t =>
       if(!originalComment) {
         throw new GraphQLError('Comment not found.')
       }
-      return prisma.comment.update({
+      const comment = await prisma.comment.update({
         ...query,
         where: {
           id: args.id
@@ -91,6 +97,10 @@ builder.mutationField('updateComment', t =>
           text: args.data.text || originalComment.text
         }
       })
+
+      pubsub.publish('comment', comment.postId, { mutation: MutationType.UPDATED, comment })
+
+      return comment
     }
   })
 )
@@ -101,21 +111,57 @@ builder.mutationField('deleteComment', t =>
     args: {
       id: t.arg.int({required: true})
     },
-    resolve: async (query, parent, args, context, info) => {
-      const comment = await prisma.comment.findUnique({
+    resolve: async (query, parent, args, { pubsub }, info) => {
+      const commentExists = await prisma.comment.findUnique({
         where: {
           id: args.id
         }
       })
-      if(!comment) {
+      if(!commentExists) {
         throw new GraphQLError('Comment not found.')
       }
-      return prisma.comment.delete({
+      const comment = await prisma.comment.delete({
         ...query,
         where: {
           id: args.id
         }
       })
+
+      pubsub.publish('comment', comment.postId, { mutation: MutationType.DELETED, comment: comment })
+
+      return comment
     }
   })
+)
+
+const SubscriptionCommentEvent = builder.objectRef<PubSubCommentEvent>('SubscriptionCommentEvent')
+SubscriptionCommentEvent.implement({
+  interfaces: [SubscriptionEvent],
+  fields: t => ({
+    comment: t.prismaField({
+      type: 'Comment',
+      nullable: true,
+      resolve: (query, event) => {
+        return prisma.comment.findUnique({
+          where: {
+            id: event.comment.id
+          }
+        })
+      }
+    })
+  })
+})
+
+builder.subscriptionField('comment', t =>
+    t.field({
+      type: SubscriptionCommentEvent,
+      nullable: true,
+      args: {
+        postId: t.arg.int({required: true})
+      },
+      subscribe: (parent, args, { pubsub }, info) =>
+          pubsub.subscribe('comment', args.postId)
+      ,
+      resolve: (event) => event
+    })
 )
