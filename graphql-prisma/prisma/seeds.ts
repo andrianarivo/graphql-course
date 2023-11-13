@@ -1,5 +1,3 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-magic-numbers */
 import { faker } from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
 

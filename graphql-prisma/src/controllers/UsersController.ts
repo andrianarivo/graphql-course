@@ -1,6 +1,6 @@
 import {builder} from '../builder'
 import {prisma} from '../db'
-import {GraphQLError} from "graphql/error";
+import {GraphQLError} from "graphql/error"
 
 builder.queryField('users', t =>
   t.prismaField({
@@ -15,7 +15,8 @@ const CreateUserInput = builder.inputType('CreateUserInput', {
   fields: (t) => ({
     name: t.string({required: true}),
     email: t.string({required: true}),
-    age: t.int({required: true})
+    age: t.int({required: true}),
+    password: t.string({required: true})
   })
 })
 
