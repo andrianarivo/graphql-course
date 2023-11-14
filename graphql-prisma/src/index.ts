@@ -1,14 +1,13 @@
 import {createYoga} from 'graphql-yoga'
 import {createServer} from 'http'
 import {schema} from "./schema"
-import { pubsub } from "./pubsub";
+import {createContext} from "./context";
 
 async function main() {
 
-
   const yoga = createYoga({
     schema,
-    context: { pubsub }
+    context: createContext
   })
 
   const server = createServer(yoga)

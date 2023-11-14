@@ -1,13 +1,14 @@
 import { builder } from '../builder'
 import { prisma } from '../db'
 import {GraphQLError} from "graphql/error"
-import {PubSubPostEvent } from "../pubsub"
+import {MutationType, PubSubPostEvent} from "../pubsub"
 import {SubscriptionEvent} from "./concerns/SubscriptionEvent";
 
 builder.queryField('posts', t =>
   t.prismaField({
     type: ['Post'],
-    resolve: (query, parent, args, context, info) => {
+    resolve: (query, parent, args, { currentUser }, info) => {
+      console.log(currentUser)
       return prisma.post.findMany({...query})
     }
   })
@@ -51,7 +52,7 @@ builder.mutationField('createPost', t =>
       })
 
       if(post.published) {
-        pubsub.publish('post', { mutation: 'CREATED', post })
+        pubsub.publish('post', { mutation: MutationType.CREATED, post })
       }
 
       return post
@@ -99,11 +100,11 @@ builder.mutationField('updatePost', t =>
       })
 
       if(originalPost.published && !post.published) {
-        pubsub.publish('post', { mutation: 'DELETED', post: originalPost })
+        pubsub.publish('post', { mutation: MutationType.DELETED, post: originalPost })
       } else if(!originalPost.published && post.published) {
-        pubsub.publish('post', { mutation: 'CREATED', post })
+        pubsub.publish('post', { mutation: MutationType.CREATED, post })
       } else {
-        pubsub.publish('post', { mutation: 'UPDATED', post })
+        pubsub.publish('post', { mutation: MutationType.UPDATED, post })
       }
 
       return post
@@ -133,7 +134,7 @@ builder.mutationField('deletePost', t =>
         }
       })
 
-      pubsub.publish('post', { mutation: 'DELETED', post: originalPost })
+      pubsub.publish('post', { mutation: MutationType.DELETED, post: originalPost })
 
       return post
     }
