@@ -1,11 +1,13 @@
 import {builder} from '../builder'
 import {prisma} from '../db'
 import {GraphQLError} from "graphql/error"
+import bcrypt from "bcryptjs";
 
 builder.queryField('users', t =>
   t.prismaField({
     type: ['User'],
-    resolve: (query, parent, args, context, info) => {
+    resolve: (query, parent, args, { currentUser }, info) => {
+      console.log(currentUser)
       return prisma.user.findMany({...query})
     }
   })
@@ -30,12 +32,14 @@ builder.mutationField('createUser', t =>
       })
     },
     resolve: async (query, parent, args, context, info) => {
+      const pwdDigest = await bcrypt.hash(args.data.password, 10)
       return prisma.user.create({
         ...query,
         data: {
           name: args.data.name,
           email: args.data.email,
-          age: args.data.age
+          age: args.data.age,
+          password: pwdDigest
         }
       })
     }

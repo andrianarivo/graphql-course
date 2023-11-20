@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="blog_graphql@localhost" uuid="8c640554-8828-4157-a947-0c443325c090">
+    <data-source source="LOCAL" name="mxvesntj@cornelius.db.elephantsql.com" uuid="4f2a71d7-5ca7-43f8-ab3a-986b7d2e706c">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/blog_graphql</jdbc-url>
+      <jdbc-url>jdbc:postgresql://cornelius.db.elephantsql.com/mxvesntj</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
