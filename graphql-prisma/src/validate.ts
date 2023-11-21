@@ -11,7 +11,6 @@ function getKey(header: JwtHeader, callback: Function) {
   })
 }
 
-
 async function isTokenValid(token: string) {
   if (token) {
     const bearerToken = token.split(" ")

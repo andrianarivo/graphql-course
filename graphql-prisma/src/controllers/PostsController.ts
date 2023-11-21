@@ -3,6 +3,7 @@ import { prisma } from '../db'
 import {GraphQLError} from "graphql/error"
 import {MutationType, PubSubPostEvent} from "../pubsub"
 import {SubscriptionEvent} from "./concerns/SubscriptionEvent";
+import {getUserId} from "./concerns/GetUserId";
 
 builder.queryField('posts', t =>
   t.prismaField({
@@ -118,14 +119,16 @@ builder.mutationField('deletePost', t =>
     args: {
       id: t.arg.int({required: true})
     },
-    resolve: async (query, parent, args, { pubsub }, info) => {
+    resolve: async (query, parent, args, { pubsub, currentUser }, info) => {
+      const userId = getUserId(currentUser)
       const originalPost = await prisma.post.findUnique({
         where: {
-          id: args.id
+          id: args.id,
+          authorId: userId
         }
       })
       if(!originalPost) {
-        throw new GraphQLError('Post not found.')
+        throw new GraphQLError('Unable to delete post.')
       }
       const post = await prisma.post.delete({
         ...query,

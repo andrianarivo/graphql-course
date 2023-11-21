@@ -1,10 +1,11 @@
 import {PubSub} from "graphql-yoga"
 import type PrismaTypes from "@pothos/plugin-prisma/generated"
 import {PubSubEvents} from "./pubsub";
+import {Auth0User} from "./controllers/concerns/GetUserId";
 
 export type GraphQLContext = {
   pubsub: PubSub<PubSubEvents>,
-  currentUser: {} | null | undefined
+  currentUser: Auth0User
 }
 
 export type SchemaBuilderType = {

@@ -2,12 +2,12 @@ import {builder} from '../builder'
 import {prisma} from '../db'
 import {GraphQLError} from "graphql/error"
 import bcrypt from "bcryptjs";
+import {getUserId} from "./concerns/GetUserId";
 
 builder.queryField('users', t =>
   t.prismaField({
     type: ['User'],
-    resolve: (query, parent, args, { currentUser }, info) => {
-      console.log(currentUser)
+    resolve: (query, parent, args, context, info) => {
       return prisma.user.findMany({...query})
     }
   })
@@ -58,16 +58,16 @@ builder.mutationField('updateUser', t =>
   t.prismaField({
     type: 'User',
     args: {
-      id: t.arg.int({required: true}),
       data: t.arg({
         type: UpdateUserInput,
         required: true
       })
     },
-    resolve: async (query, parent, args, context, info) => {
+    resolve: async (query, parent, args, { currentUser }, info) => {
+      const userId = getUserId(currentUser)
       const originalUser = await prisma.user.findUnique({
         where: {
-          id: args.id
+          id: userId
         }
       })
       if(!originalUser) {
@@ -75,7 +75,7 @@ builder.mutationField('updateUser', t =>
       }
       return prisma.user.update({
         where: {
-          id: args.id
+          id: userId
         },
         data: {
           name: args.data.name || originalUser.name,
@@ -90,13 +90,11 @@ builder.mutationField('updateUser', t =>
 builder.mutationField('deleteUser', t =>
   t.prismaField({
     type: 'User',
-    args: {
-      id: t.arg.int({required: true})
-    },
-    resolve: async (query, parent, args, context, info) => {
+    resolve: async (query, parent, args, {currentUser}, info) => {
+      const userId = getUserId(currentUser)
       const originalUser = await prisma.user.findUnique({
         where: {
-          id: args.id
+          id: userId
         }
       })
       if(!originalUser) {
@@ -104,7 +102,7 @@ builder.mutationField('deleteUser', t =>
       }
       return prisma.user.delete({
         where: {
-          id: args.id
+          id: userId
         }
       })
     }
