@@ -9,7 +9,6 @@ builder.queryField('posts', t =>
   t.prismaField({
     type: ['Post'],
     resolve: (query, parent, args, { currentUser }, info) => {
-      console.log(currentUser)
       return prisma.post.findMany({...query})
     }
   })
@@ -20,7 +19,6 @@ const CreatePostInput = builder.inputType('CreatePostInput', {
     title: t.string({required: true}),
     body: t.string({required: false}),
     published: t.boolean({required: false}),
-    author: t.int({required: true})
   })
 })
 
@@ -33,22 +31,15 @@ builder.mutationField('createPost', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, {pubsub}, info) => {
-      const userExists = await prisma.user.findUnique({
-        where: {
-          id: args.data.author
-        }
-      })
-      if(!userExists) {
-        throw new GraphQLError('User not found.')
-      }
+    resolve: async (query, parent, args, {pubsub, currentUser}, info) => {
+      const userId = getUserId(currentUser)
       const post = await prisma.post.create({
         ...query,
         data: {
           title: args.data.title,
           body: args.data.body || '',
           published: args.data.published || false,
-          authorId: args.data.author
+          authorId: userId
         }
       })
 
@@ -79,19 +70,22 @@ builder.mutationField('updatePost', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, {pubsub}, info) => {
+    resolve: async (query, parent, args, {pubsub, currentUser}, info) => {
+      const userId = getUserId(currentUser)
       const originalPost = await prisma.post.findUnique({
         where: {
-          id: args.id
+          id: args.id,
+          authorId: userId
         }
       })
       if(!originalPost) {
-        throw new GraphQLError('Post not found.')
+        throw new GraphQLError('Unable to update post.')
       }
       const post = await prisma.post.update({
         ...query,
         where: {
-          id: args.id
+          id: args.id,
+          authorId: userId
         },
         data: {
           title: args.data.title || originalPost.title,
