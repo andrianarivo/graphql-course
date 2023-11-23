@@ -9,9 +9,14 @@ export type Auth0User = {
   email: string,
 } | null | undefined
 
-export const getUserId = (currentUser: Auth0User | null | undefined): number => {
-  if(!currentUser) {
+export const getUserId = (currentUser: Auth0User, throwError = true): number => {
+  if(currentUser) {
+    return parseInt(currentUser.sub.split('|')[1])
+  }
+
+  if(throwError) {
     throw new GraphQLError('Unauthorized')
   }
-  return parseInt(currentUser.sub.split('|')[1])
+
+  return -1
 }

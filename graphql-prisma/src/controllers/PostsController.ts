@@ -14,6 +14,34 @@ builder.queryField('posts', t =>
   })
 )
 
+builder.queryField('post', t =>
+  t.prismaField({
+    type: 'Post',
+    args: {
+      id: t.arg.int({required: true})
+    },
+    resolve: async (query, parent, args, { currentUser }, info) => {
+      const userId = getUserId(currentUser, false)
+      const post = await prisma.post.findUnique({
+        where: {
+          id: args.id,
+          OR: [{
+            published: true,
+          }, {
+            authorId: userId
+          }]
+        }
+      })
+
+      if(!post) {
+        throw new GraphQLError('Post not found.')
+      }
+
+      return post
+    }
+  })
+)
+
 const CreatePostInput = builder.inputType('CreatePostInput', {
   fields: (t) => ({
     title: t.string({required: true}),

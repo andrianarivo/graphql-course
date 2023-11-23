@@ -13,6 +13,21 @@ builder.queryField('users', t =>
   })
 )
 
+builder.queryField('me', t =>
+  t.prismaField({
+    type: 'User',
+    resolve: (query, parent, args, { currentUser }, info) => {
+      const userId = getUserId(currentUser)
+
+      return prisma.user.findUniqueOrThrow({
+        where: {
+          id: userId
+        }
+      })
+    }
+  })
+)
+
 const CreateUserInput = builder.inputType('CreateUserInput', {
   fields: (t) => ({
     name: t.string({required: true}),
