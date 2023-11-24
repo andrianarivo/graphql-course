@@ -9,7 +9,17 @@ builder.queryField('posts', t =>
   t.prismaField({
     type: ['Post'],
     resolve: (query, parent, args, { jwt }, info) => {
-      return prisma.post.findMany({...query})
+      return prisma.post.findMany({...query, where: { published: true }})
+    }
+  })
+)
+
+builder.queryField('myPosts', t =>
+  t.prismaField({
+    type: ['Post'],
+    resolve: (query, parent, args, { jwt }, info) => {
+      const userId = getUserId(jwt)
+      return prisma.post.findMany({...query, where: { authorId: userId }})
     }
   })
 )
