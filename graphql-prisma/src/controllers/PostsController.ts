@@ -8,7 +8,7 @@ import {getUserId} from "./concerns/GetUserId";
 builder.queryField('posts', t =>
   t.prismaField({
     type: ['Post'],
-    resolve: (query, parent, args, { currentUser }, info) => {
+    resolve: (query, parent, args, { jwt }, info) => {
       return prisma.post.findMany({...query})
     }
   })
@@ -20,8 +20,8 @@ builder.queryField('post', t =>
     args: {
       id: t.arg.int({required: true})
     },
-    resolve: async (query, parent, args, { currentUser }, info) => {
-      const userId = getUserId(currentUser, false)
+    resolve: async (query, parent, args, { jwt }, info) => {
+      const userId = getUserId(jwt, false)
       const post = await prisma.post.findUnique({
         where: {
           id: args.id,
@@ -59,8 +59,8 @@ builder.mutationField('createPost', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, {pubsub, currentUser}, info) => {
-      const userId = getUserId(currentUser)
+    resolve: async (query, parent, args, {pubsub, jwt}, info) => {
+      const userId = getUserId(jwt)
       const post = await prisma.post.create({
         ...query,
         data: {
@@ -98,8 +98,8 @@ builder.mutationField('updatePost', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, {pubsub, currentUser}, info) => {
-      const userId = getUserId(currentUser)
+    resolve: async (query, parent, args, {pubsub, jwt}, info) => {
+      const userId = getUserId(jwt)
       const originalPost = await prisma.post.findUnique({
         where: {
           id: args.id,
@@ -141,8 +141,8 @@ builder.mutationField('deletePost', t =>
     args: {
       id: t.arg.int({required: true})
     },
-    resolve: async (query, parent, args, { pubsub, currentUser }, info) => {
-      const userId = getUserId(currentUser)
+    resolve: async (query, parent, args, { pubsub, jwt }, info) => {
+      const userId = getUserId(jwt)
       const originalPost = await prisma.post.findUnique({
         where: {
           id: args.id,

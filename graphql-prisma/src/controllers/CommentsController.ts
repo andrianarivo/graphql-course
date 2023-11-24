@@ -30,8 +30,8 @@ builder.mutationField('createComment', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, { pubsub, currentUser }, info) => {
-      const userId = getUserId(currentUser)
+    resolve: async (query, parent, args, { pubsub, jwt }, info) => {
+      const userId = getUserId(jwt)
       const postExists = await prisma.post.findUnique({
         where: {
           id: args.data.post
@@ -72,8 +72,8 @@ builder.mutationField('updateComment', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, { pubsub, currentUser }, info) => {
-      const userId = getUserId(currentUser)
+    resolve: async (query, parent, args, { pubsub, jwt }, info) => {
+      const userId = getUserId(jwt)
       const originalComment = await prisma.comment.findUnique({
         where: {
           id: args.id,
@@ -107,8 +107,8 @@ builder.mutationField('deleteComment', t =>
     args: {
       id: t.arg.int({required: true})
     },
-    resolve: async (query, parent, args, { pubsub, currentUser }, info) => {
-      const userId = getUserId(currentUser)
+    resolve: async (query, parent, args, { pubsub, jwt }, info) => {
+      const userId = getUserId(jwt)
       const commentExists = await prisma.comment.findUnique({
         where: {
           id: args.id,

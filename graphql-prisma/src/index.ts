@@ -1,13 +1,21 @@
 import {createYoga} from 'graphql-yoga'
 import {createServer} from 'http'
 import {schema} from "./schema"
-import {createContext} from "./context";
+import {createContext} from "./context"
+import {useJWT} from "@graphql-yoga/plugin-jwt";
 
 async function main() {
 
   const yoga = createYoga({
     schema,
-    context: createContext
+    context: createContext,
+    plugins: [
+      useJWT({
+        audience: process.env.AUTH0_AUDIENCE,
+        issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+        signingKey: process.env.AUTH0_SIGNING_KEY!
+      })
+    ]
   })
 
   const server = createServer(yoga)

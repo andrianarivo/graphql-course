@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ElephantSQL" uuid="4f2a71d7-5ca7-43f8-ab3a-986b7d2e706c">
+    <data-source source="LOCAL" name="mxvesntj@cornelius.db.elephantsql.com" uuid="8c9adb60-5d9d-4702-a485-fafc456e9f38">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

@@ -5,10 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8ef2e338-c714-413e-8f3e-65671629f2fa" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../graphql-basics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-basics/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../graphql-prisma/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/context.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/CommentsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/CommentsController.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/PostsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/PostsController.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/UsersController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/UsersController.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/concerns/GetUserId.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/concerns/GetUserId.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/validate.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +45,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/andri/Documents/novity/graphql-course/auth0-react-samples/Sample-01/src&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/david/Documents/novity/graphql-course/auth0-react-samples/Sample-01/src&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -48,6 +57,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="C:\Users\andri\Documents\novity\graphql-course\auth0-react-samples\Sample-01\src" />
     </key>
   </component>
@@ -72,10 +82,9 @@
       <option name="presentableId" value="Default" />
       <updated>1700499099183</updated>
       <workItem from="1700499100183" duration="2354000" />
-      <workItem from="1700674161029" duration="620000" />
-      <workItem from="1700743488787" duration="1203000" />
-      <workItem from="1700745365423" duration="612000" />
-      <workItem from="1700752530728" duration="1788000" />
+      <workItem from="1700572107258" duration="934000" />
+      <workItem from="1700831812916" duration="1065000" />
+      <workItem from="1700839570330" duration="824000" />
     </task>
     <servers />
   </component>

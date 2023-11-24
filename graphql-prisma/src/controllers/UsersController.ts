@@ -16,8 +16,8 @@ builder.queryField('users', t =>
 builder.queryField('me', t =>
   t.prismaField({
     type: 'User',
-    resolve: (query, parent, args, { currentUser }, info) => {
-      const userId = getUserId(currentUser)
+    resolve: (query, parent, args, { jwt }, info) => {
+      const userId = getUserId(jwt)
 
       return prisma.user.findUniqueOrThrow({
         where: {
@@ -78,8 +78,8 @@ builder.mutationField('updateUser', t =>
         required: true
       })
     },
-    resolve: async (query, parent, args, { currentUser }, info) => {
-      const userId = getUserId(currentUser)
+    resolve: async (query, parent, args, { jwt }, info) => {
+      const userId = getUserId(jwt)
       const originalUser = await prisma.user.findUnique({
         where: {
           id: userId
@@ -105,8 +105,8 @@ builder.mutationField('updateUser', t =>
 builder.mutationField('deleteUser', t =>
   t.prismaField({
     type: 'User',
-    resolve: async (query, parent, args, {currentUser}, info) => {
-      const userId = getUserId(currentUser)
+    resolve: async (query, parent, args, {jwt}, info) => {
+      const userId = getUserId(jwt)
       const originalUser = await prisma.user.findUnique({
         where: {
           id: userId

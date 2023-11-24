@@ -1,17 +1,9 @@
 import {GraphQLError} from "graphql/error";
+import {JWTPayload} from "../../types";
 
-export type Auth0User = {
-  sub: string,
-  nickname: string,
-  name: string,
-  picture: string,
-  updated_at: string,
-  email: string,
-} | null | undefined
-
-export const getUserId = (currentUser: Auth0User, throwError = true): number => {
-  if(currentUser) {
-    return parseInt(currentUser.sub.split('|')[1])
+export const getUserId = (jwt: JWTPayload, throwError = true): number => {
+  if(jwt) {
+    return parseInt(jwt.sub.split('|')[1])
   }
 
   if(throwError) {
