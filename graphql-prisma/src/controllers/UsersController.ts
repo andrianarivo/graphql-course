@@ -1,7 +1,6 @@
 import {builder} from '../builder'
 import {prisma} from '../db'
 import {GraphQLError} from "graphql/error"
-import bcrypt from "bcryptjs";
 import {getUserId} from "./concerns/GetUserId";
 import hashPassword from "./concerns/HashPassword";
 
