@@ -3,6 +3,7 @@ import {prisma} from '../db'
 import {GraphQLError} from "graphql/error"
 import bcrypt from "bcryptjs";
 import {getUserId} from "./concerns/GetUserId";
+import hashPassword from "./concerns/HashPassword";
 
 builder.queryField('users', t =>
   t.prismaField({
@@ -47,7 +48,7 @@ builder.mutationField('createUser', t =>
       })
     },
     resolve: async (query, parent, args, context, info) => {
-      const pwdDigest = await bcrypt.hash(args.data.password, 10)
+      const pwdDigest = await hashPassword(args.data.password)
       return prisma.user.create({
         ...query,
         data: {
@@ -65,6 +66,7 @@ const UpdateUserInput = builder.inputType('UpdateUserInput', {
   fields: (t) => ({
     name: t.string({required: false}),
     email: t.string({required: false}),
+    password: t.string({required: false}),
     age: t.int({required: false})
   })
 })
@@ -80,6 +82,9 @@ builder.mutationField('updateUser', t =>
     },
     resolve: async (query, parent, args, { jwt }, info) => {
       const userId = getUserId(jwt)
+      if(args.data.password) {
+        args.data.password = await hashPassword(args.data.password)
+      }
       const originalUser = await prisma.user.findUnique({
         where: {
           id: userId
@@ -95,6 +100,7 @@ builder.mutationField('updateUser', t =>
         data: {
           name: args.data.name || originalUser.name,
           email: args.data.email || originalUser.email,
+          password: args.data.password || originalUser.password,
           age: args.data.age || originalUser.age
         }
       })

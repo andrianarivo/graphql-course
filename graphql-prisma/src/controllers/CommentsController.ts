@@ -34,7 +34,8 @@ builder.mutationField('createComment', t =>
       const userId = getUserId(jwt)
       const postExists = await prisma.post.findUnique({
         where: {
-          id: args.data.post
+          id: args.data.post,
+          published: true
         }
       })
       if(!postExists) {

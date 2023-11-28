@@ -119,6 +119,15 @@ builder.mutationField('updatePost', t =>
       if(!originalPost) {
         throw new GraphQLError('Unable to update post.')
       }
+
+      if(originalPost.published && !args.data.published) {
+        await prisma.comment.deleteMany({
+          where: {
+            postId: args.id
+          }
+        })
+      }
+
       const post = await prisma.post.update({
         ...query,
         where: {
@@ -204,3 +213,36 @@ builder.subscriptionField('post', t =>
       resolve: (payload) => payload
     })
 )
+
+const SubscriptionMyPostEvent = builder.objectRef<PubSubPostEvent>('SubscriptionMyPostEvent')
+SubscriptionMyPostEvent.implement({
+  interfaces: [SubscriptionEvent],
+  fields: t => ({
+    post: t.prismaField({
+      type: 'Post',
+      nullable: true,
+      resolve: (query, event, args, { jwt }) => {
+        const userId = getUserId(jwt)
+        return prisma.post.findUnique({
+          where: {
+            id: event.post.id,
+            authorId: userId
+          }
+        })
+      }
+    })
+  })
+})
+
+builder.subscriptionField('myPost', t =>
+    t.field({
+      type: SubscriptionMyPostEvent,
+      nullable: true,
+      subscribe: (parent, args, { pubsub , jwt }, info) => {
+        getUserId(jwt)
+        return pubsub.subscribe('post')
+      },
+      resolve: (payload) => payload
+    })
+)
+
