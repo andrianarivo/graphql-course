@@ -15,7 +15,11 @@ builder.prismaObject('User', {
         }
       }),
       age: t.exposeInt('age'),
-      posts: t.relation('posts'),
+      posts: t.relation('posts', {
+        query: () => ({
+          where: { published: true }
+        })
+      }),
       comments: t.relation('comments')
   })
 })
