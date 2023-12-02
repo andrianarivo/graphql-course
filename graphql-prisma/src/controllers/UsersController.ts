@@ -7,8 +7,12 @@ import hashPassword from "./concerns/HashPassword";
 builder.queryField('users', t =>
   t.prismaField({
     type: ['User'],
+    args: {
+      take: t.arg.int({required: false, defaultValue: 10}),
+      skip: t.arg.int({required: false, defaultValue: 0}),
+    },
     resolve: (query, parent, args, context, info) => {
-      return prisma.user.findMany({...query})
+      return prisma.user.findMany({...query, take: args.take!, skip: args.skip!})
     }
   })
 )
