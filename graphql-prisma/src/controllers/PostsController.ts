@@ -11,13 +11,17 @@ builder.queryField('posts', t =>
     args: {
       take: t.arg.int({required: false, defaultValue: 10}),
       skip: t.arg.int({required: false, defaultValue: 0}),
+      cursorId: t.arg.int({required: false, defaultValue: 1})
     },
     resolve: (query, parent, args, { jwt }, info) => {
       return prisma.post.findMany({
         ...query,
         where: { published: true },
         take: args.take!,
-        skip: args.skip!
+        skip: args.skip!,
+        cursor: {
+          id: args.cursorId!
+        }
       })
     }
   })
@@ -26,9 +30,22 @@ builder.queryField('posts', t =>
 builder.queryField('myPosts', t =>
   t.prismaField({
     type: ['Post'],
+    args: {
+      take: t.arg.int({required: false, defaultValue: 10}),
+      skip: t.arg.int({required: false, defaultValue: 0}),
+      cursorId: t.arg.int({required: false, defaultValue: 1})
+    },
     resolve: (query, parent, args, { jwt }, info) => {
       const userId = getUserId(jwt)
-      return prisma.post.findMany({...query, where: { authorId: userId }})
+      return prisma.post.findMany({
+        ...query,
+        where: { authorId: userId },
+          take: args.take!,
+        skip: args.skip!,
+        cursor: {
+          id: args.cursorId!
+        }
+      })
     }
   })
 )

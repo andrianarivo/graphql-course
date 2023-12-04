@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8ef2e338-c714-413e-8f3e-65671629f2fa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/UsersController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/UsersController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/CommentsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/CommentsController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/PostsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../graphql-prisma/src/controllers/PostsController.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +76,8 @@
       <workItem from="1700839570330" duration="1423000" />
       <workItem from="1701182452988" duration="1278000" />
       <workItem from="1701248083911" duration="629000" />
+      <workItem from="1701536508608" duration="945000" />
+      <workItem from="1701714484284" duration="898000" />
     </task>
     <servers />
   </component>

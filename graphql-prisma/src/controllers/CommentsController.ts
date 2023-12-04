@@ -8,8 +8,20 @@ import {getUserId} from "./concerns/GetUserId";
 builder.queryField('comments', t =>
   t.prismaField({
     type: ['Comment'],
+    args: {
+      take: t.arg.int({required: false, defaultValue: 10}),
+      skip: t.arg.int({required: false, defaultValue: 0}),
+      cursorId: t.arg.int({required: false, defaultValue: 1})
+    },
     resolve: (query, parent, args, context, info) => {
-      return prisma.comment.findMany({...query})
+      return prisma.comment.findMany({
+        ...query,
+        take: args.take!,
+        skip: args.skip!,
+        cursor: {
+          id: args.cursorId!
+        }
+      })
     }
   })
 )
