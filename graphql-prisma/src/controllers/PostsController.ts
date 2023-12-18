@@ -4,6 +4,24 @@ import {GraphQLError} from "graphql/error"
 import {MutationType, PubSubPostEvent} from "../pubsub"
 import {SubscriptionEvent} from "./concerns/SubscriptionEvent";
 import {getUserId} from "./concerns/GetUserId";
+import {Sort} from "../models/concerns/Sort";
+
+const PostOrderByInput = builder.inputType('PostOrderByInput', {
+  fields: (t) => ({
+    title: t.field({
+      type: Sort,
+      required: false
+    }),
+    body: t.field({
+      type: Sort,
+      required: false
+    }),
+    published: t.field({
+      type: Sort,
+      required: false
+    })
+  })
+})
 
 builder.queryField('posts', t =>
   t.prismaField({
@@ -11,7 +29,11 @@ builder.queryField('posts', t =>
     args: {
       take: t.arg.int({required: false, defaultValue: 10}),
       skip: t.arg.int({required: false, defaultValue: 0}),
-      cursorId: t.arg.int({required: false, defaultValue: 1})
+      cursorId: t.arg.int({required: false, defaultValue: 1}),
+      orderBy: t.arg({
+        type: PostOrderByInput,
+        required: false
+      })
     },
     resolve: (query, parent, args, { jwt }, info) => {
       return prisma.post.findMany({
@@ -21,7 +43,8 @@ builder.queryField('posts', t =>
         skip: args.skip!,
         cursor: {
           id: args.cursorId!
-        }
+        },
+        orderBy: [args.orderBy as object || {}]
       })
     }
   })
@@ -33,18 +56,23 @@ builder.queryField('myPosts', t =>
     args: {
       take: t.arg.int({required: false, defaultValue: 10}),
       skip: t.arg.int({required: false, defaultValue: 0}),
-      cursorId: t.arg.int({required: false, defaultValue: 1})
+      cursorId: t.arg.int({required: false, defaultValue: 1}),
+      orderBy: t.arg({
+        type: PostOrderByInput,
+        required: false
+      })
     },
     resolve: (query, parent, args, { jwt }, info) => {
       const userId = getUserId(jwt)
       return prisma.post.findMany({
         ...query,
         where: { authorId: userId },
-          take: args.take!,
+        take: args.take!,
         skip: args.skip!,
         cursor: {
           id: args.cursorId!
-        }
+        },
+        orderBy: [args.orderBy as object || {}]
       })
     }
   })

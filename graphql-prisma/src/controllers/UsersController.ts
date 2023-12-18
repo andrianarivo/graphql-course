@@ -3,6 +3,24 @@ import {prisma} from '../db'
 import {GraphQLError} from "graphql/error"
 import {getUserId} from "./concerns/GetUserId";
 import hashPassword from "./concerns/HashPassword";
+import {Sort} from "../models/concerns/Sort";
+
+const UserOrderByInput = builder.inputType('UserOrderByInput', {
+  fields: (t) => ({
+    name: t.field({
+      type: Sort,
+      required: false
+    }),
+    email: t.field({
+      type: Sort,
+      required: false
+    }),
+    age: t.field({
+      type: Sort,
+      required: false
+    })
+  })
+})
 
 builder.queryField('users', t =>
   t.prismaField({
@@ -10,9 +28,13 @@ builder.queryField('users', t =>
     args: {
       take: t.arg.int({required: false, defaultValue: 10}),
       skip: t.arg.int({required: false, defaultValue: 0}),
+      orderBy: t.arg({
+        type: UserOrderByInput,
+        required: false
+      })
     },
     resolve: (query, parent, args, context, info) => {
-      return prisma.user.findMany({...query, take: args.take!, skip: args.skip!})
+      return prisma.user.findMany({...query, orderBy: [args.orderBy as object || {}], take: args.take!, skip: args.skip!})
     }
   })
 )

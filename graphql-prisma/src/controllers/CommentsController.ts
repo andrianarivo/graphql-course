@@ -4,6 +4,16 @@ import {GraphQLError} from "graphql/error";
 import {MutationType, PubSubCommentEvent, PubSubEvent} from "../pubsub";
 import {SubscriptionEvent} from "./concerns/SubscriptionEvent";
 import {getUserId} from "./concerns/GetUserId";
+import {Sort} from "../models/concerns/Sort";
+
+const CommentOrderByInput = builder.inputType('CommentOrderByInput', {
+  fields: (t) => ({
+    text: t.field({
+      type: Sort,
+      required: false
+    })
+  })
+})
 
 builder.queryField('comments', t =>
   t.prismaField({
@@ -11,7 +21,11 @@ builder.queryField('comments', t =>
     args: {
       take: t.arg.int({required: false, defaultValue: 10}),
       skip: t.arg.int({required: false, defaultValue: 0}),
-      cursorId: t.arg.int({required: false, defaultValue: 1})
+      cursorId: t.arg.int({required: false, defaultValue: 1}),
+      orderBy: t.arg({
+        type: CommentOrderByInput,
+        required: false
+      })
     },
     resolve: (query, parent, args, context, info) => {
       return prisma.comment.findMany({
@@ -20,7 +34,8 @@ builder.queryField('comments', t =>
         skip: args.skip!,
         cursor: {
           id: args.cursorId!
-        }
+        },
+        orderBy: [args.orderBy as object || {}]
       })
     }
   })
