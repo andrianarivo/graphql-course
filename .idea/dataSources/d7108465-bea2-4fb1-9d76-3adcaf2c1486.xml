@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="blog_graphql@localhost">
-  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
+  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.51">
     <root id="1">
       <DateStyle>dmy</DateStyle>
       <Grants>1||-9223372036854775808|c|G
@@ -4871,8 +4871,7 @@ false posixrules
       <Comment>standard public schema</Comment>
       <Current>1</Current>
       <IntrospectionStateNumber>3068</IntrospectionStateNumber>
-      <IntrospectionTimestamp>2023-11-07.14:18:40.175</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-11-07.11:18:40</LocalIntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2023-11-07.11:18:40</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>526</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4889,7 +4888,7 @@ ADMIN</Labels>
     <sequence id="271" parent="269" name="Category_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>18084</ObjectId>
-      <SequenceIdentity>1(1)</SequenceIdentity>
+      <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>3019</StateNumber>
       <OwnerName>david</OwnerName>
@@ -4897,7 +4896,7 @@ ADMIN</Labels>
     <sequence id="272" parent="269" name="Post_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>17897</ObjectId>
-      <SequenceIdentity>1(1)</SequenceIdentity>
+      <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>2996</StateNumber>
       <OwnerName>david</OwnerName>
@@ -4905,7 +4904,7 @@ ADMIN</Labels>
     <sequence id="273" parent="269" name="UserPreference_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>18077</ObjectId>
-      <SequenceIdentity>1(6)</SequenceIdentity>
+      <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>3019</StateNumber>
       <OwnerName>david</OwnerName>
@@ -4913,7 +4912,7 @@ ADMIN</Labels>
     <sequence id="274" parent="269" name="User_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>17888</ObjectId>
-      <SequenceIdentity>1(10)</SequenceIdentity>
+      <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
       <StateNumber>2996</StateNumber>
       <OwnerName>david</OwnerName>
