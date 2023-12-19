@@ -1,4 +1,4 @@
-import {schema} from "./schema"
+import {schema} from "../schema"
 import {lexicographicSortSchema, printSchema} from "graphql/utilities"
 import {writeFileSync} from "node:fs";
 

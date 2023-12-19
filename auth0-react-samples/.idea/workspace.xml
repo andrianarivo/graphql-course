@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="2bc7e346-59e7-4983-81a7-5b180b9abc33" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/__tests__/user.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/__tests__/user.spec.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../graphql-prisma/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../graphql-prisma/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../graphql-prisma/src/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql-prisma/src/context.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../graphql-prisma/src/printSchema.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,11 +40,35 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/david/Documents/novity/graphql-course/auth0-react-samples",
+    "last_opened_file_path": "/home/david/Documents/novity/graphql-course/graphql-prisma",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
+    "npm.dev.executor": "Debug",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/Sample-01/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-56bbcd2c060c-JavaScript-WS-233.11799.293" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -46,6 +79,8 @@
       <updated>1700498872046</updated>
       <workItem from="1700498873097" duration="218000" />
       <workItem from="1700572090918" duration="11000" />
+      <workItem from="1702903960012" duration="1359000" />
+      <workItem from="1702970922332" duration="622000" />
     </task>
     <servers />
   </component>

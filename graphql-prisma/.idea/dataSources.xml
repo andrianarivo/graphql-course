@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://cornelius.db.elephantsql.com/mxvesntj</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="blog_graphql_test@localhost" uuid="7b455f97-56c2-4ae6-8a3a-be081b6eabed">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/blog_graphql_test</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

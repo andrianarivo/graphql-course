@@ -1,8 +1,10 @@
 import {executor} from "../src/server"
 import {parse} from "graphql"
 import {prisma} from "../src/db"
+import {Post, User} from "@prisma/client"
+import login from "../src/utils/login";
 
-beforeEach(async () => {
+beforeAll(async () => {
   const user = await prisma.user.create({
     data: {
       name: 'Test User',
@@ -37,7 +39,7 @@ beforeEach(async () => {
   })
 })
 
-afterEach(async () => {
+afterAll(async () => {
   const testUser = await prisma.user.findFirst({
     where: {
       email: 'test.user@mail.test'
@@ -63,7 +65,7 @@ afterEach(async () => {
   })
 })
 
-test('This is my first test case', async () => {
+test('Should create a new user', async () => {
   await executor({
     document: parse(/* GraphQL */ `
       mutation {
@@ -91,4 +93,68 @@ test('This is my first test case', async () => {
     email: 'john.doe@mail.test',
     age: 42
   })
+})
+
+test('Should expose public author profiles', async () => {
+  const response = await executor({
+    document: parse(/* GraphQL */ `
+      query {
+        users {
+          id
+          name
+          email
+        }
+      }
+    `)
+  }) as { data: { users: User[] }}
+
+  expect(response.data.users.length).toBe(10)
+  expect(response.data.users[0].email).toBe('')
+  expect(response.data.users[0].name).toBe('Damon Keebler')
+})
+
+test('Should expose published posts', async () => {
+  const response = await executor({
+    document: parse(/* GraphQL */ `
+      query {
+        posts {
+          id
+          title
+          body
+          published
+        }
+      }
+    `)
+  }) as { data: { posts: Post[] }}
+
+  expect(response.data.posts.length).toBe(1)
+  expect(response.data.posts[0].published).toBeTruthy()
+})
+
+test('Should not login with bad credentials', async () => {
+  await expect(
+    login({
+      username: 'doesnt@exist.com',
+      password: 'admin1234'
+    })
+  ).rejects.toThrow()
+})
+
+test('Should not signup with short password', async () => {
+  const response = await executor({
+    document: parse(/* GraphQL */ `
+      mutation {
+        createUser(data: {
+          name: "Jane", 
+          email: "jane.doe@mail.test", 
+          age: 42,
+          password: "a1"
+        }) {
+          id
+          name
+        }
+      } 
+    `)
+  }) as any
+  expect(response.errors[0].message).toBe('Password must be 8 characters or longer')
 })
