@@ -6,8 +6,10 @@ let userOne: User
 let userTwo: User
 let postOne: Post
 let postTwo: Post
+let postThree: Post
 let commentOne: Comment
 let commentTwo: Comment
+let commentThree: Comment
 
 const setupDatabase = async () => {
   userOne = await prisma.user.create({
@@ -34,6 +36,14 @@ const setupDatabase = async () => {
       authorId: userOne.id
     }
   })
+  postThree = await prisma.post.create({
+    data: {
+      title: 'Test Post 3',
+      body: 'Test Post Body 3',
+      published: true,
+      authorId: 51
+    }
+  })
   userTwo = await prisma.user.create({
     data: {
       name: 'Test User 2',
@@ -56,37 +66,42 @@ const setupDatabase = async () => {
       postId: postOne.id
     }
   })
+  commentThree = await prisma.comment.create({
+    data: {
+      text: 'Test Comment 3',
+      authorId: 51,
+      postId: postOne.id
+    }
+  })
 }
 
 const tearDownDatabase = async () => {
-  await prisma.comment.deleteMany({
-    where: {
-      authorId: 51
-    }
-  })
-  await prisma.comment.deleteMany({
-    where: {
-      authorId: userOne.id
-    }
-  })
-  await prisma.comment.deleteMany({
-    where: {
-      authorId: userTwo.id
-    }
-  })
   await prisma.post.deleteMany({
     where: {
-      authorId: userOne.id
+      OR: [
+        { title: 'Test Post 3' },
+        { title: 'Test Post 4' },
+        { authorId: 51 },
+        { authorId: userOne.id },
+        { authorId: userTwo.id }
+      ]
     }
   })
-  await prisma.user.delete({
+  await prisma.comment.deleteMany({
     where: {
-      id: userOne.id
+      OR: [
+        {authorId: 51},
+        {authorId: userOne.id},
+        {authorId: userTwo.id}
+      ]
     }
   })
-  await prisma.user.delete({
+  await prisma.user.deleteMany({
     where: {
-      id: userTwo.id
+      OR: [
+        {id: userOne.id},
+        {id: userTwo.id}
+      ]
     }
   })
 }
@@ -96,4 +111,4 @@ const auth0User = login({
   password: 'admin1234',
 })
 
-export { setupDatabase, tearDownDatabase, auth0User, userOne, postOne, postTwo, userTwo, commentOne, commentTwo };
+export { setupDatabase, tearDownDatabase, auth0User, userOne, postOne, postTwo, postThree, userTwo, commentOne, commentTwo, commentThree };

@@ -1,17 +1,19 @@
 import {
   auth0User,
-  commentOne,
-  commentTwo,
+  commentOne, commentThree,
+  commentTwo, postOne, postTwo,
   setupDatabase,
   tearDownDatabase
 } from "../src/utils/seedTestDatabase"
 import buildExecutor from "../src/utils/buildExecutor"
-import { deleteComment } from "../src/utils/operations"
+import {deleteComment, subscribeToComments} from "../src/utils/operations"
 import {prisma} from "../src/db"
 import type { Comment } from "@prisma/client"
 
 beforeAll(setupDatabase)
 afterAll(tearDownDatabase)
+
+const executor = buildExecutor()
 
 test('Should delete own comment', async () => {
   const user = await auth0User
@@ -42,4 +44,29 @@ test('Should not delete other users comment', async () => {
   }) as { errors?: { message: string }[]}
   const { errors } = response
   expect(errors).toBeTruthy()
+})
+
+test('Should subscript to comments for a post',  (done) => {
+  const subscribe = async () => {
+    const user = await auth0User
+    const authExecutor = buildExecutor(user.access_token)
+    const response = await authExecutor({
+      document: subscribeToComments,
+      variables: {
+        ID: postOne.id
+      }
+    }) as AsyncGenerator
+    const iterator = response[Symbol.asyncIterator]()
+    iterator.next().then(({ value }) => {
+      expect(value.data.comment.mutation).toBe('DELETED')
+      done()
+    })
+    await authExecutor({
+      document: deleteComment,
+      variables: {
+        ID: commentThree.id
+      }
+    })
+  }
+  subscribe()
 })

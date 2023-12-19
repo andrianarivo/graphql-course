@@ -51,7 +51,7 @@ const getMyPosts = parse(/* GraphQL */ `
   }
 `)
 
-const updatePosts = parse(/* GraphQL */ `
+const updatePost = parse(/* GraphQL */ `
   mutation($ID: Int!, $data: UpdatePostInput!) {
     updatePost(id: $ID, data: $data) {
       id
@@ -93,4 +93,30 @@ const deleteComment =  parse(/* GraphQL */ `
   }
 `)
 
-export { createUser, getProfile, getUsers, getPosts, getMyPosts, updatePosts, createPost, deletePost, deleteComment }
+const subscribeToComments = parse(/* GraphQL */ `
+  subscription($ID: Int!) {
+    comment(postId: $ID) {
+      mutation
+      comment {
+        id
+        text
+      }
+    }
+  }
+`)
+
+const subscribeToPosts = parse(/* GraphQL */ `
+  subscription {
+    post {
+      mutation
+      post {
+        id
+        title
+        body
+        published
+      }
+    }
+  }
+`)
+
+export { createUser, getProfile, getUsers, getPosts, getMyPosts, updatePost, createPost, deletePost, deleteComment, subscribeToComments, subscribeToPosts }

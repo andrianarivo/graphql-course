@@ -1,17 +1,19 @@
 import {Post} from "@prisma/client"
-import {setupDatabase, tearDownDatabase, auth0User} from "../src/utils/seedTestDatabase"
+import {setupDatabase, tearDownDatabase, auth0User, postThree} from "../src/utils/seedTestDatabase"
 import buildExecutor from "../src/utils/buildExecutor"
 import {prisma} from "../src/db"
-import {createPost, deletePost, getMyPosts, getPosts, updatePosts} from "../src/utils/operations"
+import {
+  createPost,
+  deletePost,
+  getMyPosts,
+  getPosts,
+  subscribeToPosts,
+  updatePost
+} from "../src/utils/operations"
 
 beforeAll(setupDatabase)
 afterAll(async () => {
   await tearDownDatabase()
-  await prisma.post.deleteMany({
-    where: {
-      title: 'Test Post 4'
-    }
-  })
 })
 
 const executor = buildExecutor()
@@ -21,7 +23,7 @@ test('Should expose published posts', async () => {
     document: getPosts,
   }) as { data: { posts: Post[] }}
 
-  expect(response.data.posts.length).toBe(1)
+  expect(response.data.posts.length).toBe(2)
   expect(response.data.posts[0].published).toBeTruthy()
 })
 
@@ -38,9 +40,9 @@ test('Should be able to update own post', async () => {
   const user = await auth0User
   const authExecutor = buildExecutor(user.access_token)
   const response = await authExecutor({
-    document: updatePosts,
+    document: updatePost,
     variables: {
-      ID: 62,
+      ID: postThree.id,
       data: {
         published: false
       }
@@ -98,4 +100,29 @@ test('Should be able to delete post', async () => {
     }
   })
   expect(deletedPost).toBeNull()
+})
+
+test('Should subscribe to post', (done) => {
+  const subscribe = async () => {
+    const user = await auth0User
+    const authExecutor = buildExecutor(user.access_token)
+    const response = await authExecutor({
+      document: subscribeToPosts
+    }) as AsyncGenerator
+    const iterator = response[Symbol.asyncIterator]()
+    iterator.next().then(({ value }) => {
+      expect(value.data.post.mutation).toBe('CREATED')
+      done()
+    })
+    await authExecutor({
+      document: updatePost,
+      variables: {
+        ID: postThree.id,
+        data: {
+          published: true
+        }
+      }
+    })
+  }
+  subscribe()
 })
