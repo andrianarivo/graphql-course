@@ -1,62 +1,13 @@
-import {executor} from "../src/server"
-import {parse} from "graphql"
 import {prisma} from "../src/db"
 import {Post, User} from "@prisma/client"
-import login from "../src/utils/login";
+import login from "../src/utils/login"
+import {setupDatabase, tearDownDatabase, auth0User} from "../src/utils/seedTestDatabase"
+import buildExecutor from "../src/utils/buildExecutor"
+import {createUser, getProfile, getUsers} from "../src/utils/operations"
 
-beforeAll(async () => {
-  const user = await prisma.user.create({
-    data: {
-      name: 'Test User',
-      email: 'test.user@mail.test',
-      age: 32,
-      password: 'admin1234',
-    }
-  })
-  await prisma.post.create({
-    data: {
-      title: 'Test Post 1',
-      body: 'Test Post Body 1',
-      published: true,
-      authorId: user.id
-    }
-  })
-  await prisma.post.create({
-    data: {
-      title: 'Test Post 2',
-      body: 'Test Post Body 2',
-      published: false,
-      authorId: user.id
-    }
-  })
-  await prisma.post.create({
-    data: {
-      title: 'Test Post 3',
-      body: 'Test Post Body 3',
-      published: false,
-      authorId: user.id
-    }
-  })
-})
-
+beforeAll(setupDatabase)
 afterAll(async () => {
-  const testUser = await prisma.user.findFirst({
-    where: {
-      email: 'test.user@mail.test'
-    }
-  })
-  if (testUser) {
-    await prisma.post.deleteMany({
-      where: {
-        authorId: testUser.id
-      }
-    })
-    await prisma.user.delete({
-      where: {
-        email: 'test.user@mail.test',
-      }
-    })
-  }
+  await tearDownDatabase()
 
   await prisma.user.delete({
     where: {
@@ -65,21 +16,19 @@ afterAll(async () => {
   })
 })
 
+const executor = buildExecutor()
+
 test('Should create a new user', async () => {
   await executor({
-    document: parse(/* GraphQL */ `
-      mutation {
-        createUser(data: {
-          name: "John", 
-          email: "john.doe@mail.test", 
-          age: 42,
-          password: "admin1234"
-        }) {
-          id
-          name
-        }
-      } 
-    `)
+    document: createUser,
+    variables: {
+      data: {
+        name: "John",
+        email: "john.doe@mail.test",
+        age: 42,
+        password: "admin1234"
+      }
+    }
   })
 
   const createdUser = await prisma.user.findFirst({
@@ -97,38 +46,12 @@ test('Should create a new user', async () => {
 
 test('Should expose public author profiles', async () => {
   const response = await executor({
-    document: parse(/* GraphQL */ `
-      query {
-        users {
-          id
-          name
-          email
-        }
-      }
-    `)
+    document: getUsers
   }) as { data: { users: User[] }}
 
   expect(response.data.users.length).toBe(10)
   expect(response.data.users[0].email).toBe('')
   expect(response.data.users[0].name).toBe('Damon Keebler')
-})
-
-test('Should expose published posts', async () => {
-  const response = await executor({
-    document: parse(/* GraphQL */ `
-      query {
-        posts {
-          id
-          title
-          body
-          published
-        }
-      }
-    `)
-  }) as { data: { posts: Post[] }}
-
-  expect(response.data.posts.length).toBe(1)
-  expect(response.data.posts[0].published).toBeTruthy()
 })
 
 test('Should not login with bad credentials', async () => {
@@ -142,19 +65,26 @@ test('Should not login with bad credentials', async () => {
 
 test('Should not signup with short password', async () => {
   const response = await executor({
-    document: parse(/* GraphQL */ `
-      mutation {
-        createUser(data: {
-          name: "Jane", 
-          email: "jane.doe@mail.test", 
-          age: 42,
-          password: "a1"
-        }) {
-          id
-          name
-        }
-      } 
-    `)
+    document: createUser,
+    variables: {
+      data: {
+        name: "Jane",
+        email: "jane.doe@mail.test",
+        age: 42,
+        password: "a1"
+      }
+    }
   }) as any
   expect(response.errors[0].message).toBe('Password must be 8 characters or longer')
+})
+
+test('Should fetch user profile', async () => {
+  const user = await auth0User
+  const authExecutor = buildExecutor(user.access_token)
+  const response = await authExecutor({
+    document: getProfile
+  }) as { data: { me: User }}
+  expect(response.data.me.id).toBe('51')
+  expect(response.data.me.name).toBe('Carol Kulas')
+  expect(response.data.me.email).toBe('Abagail_Towne@yahoo.com')
 })

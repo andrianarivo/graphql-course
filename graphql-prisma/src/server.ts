@@ -17,10 +17,6 @@ const yoga = createYoga({
   ]
 })
 
-const executor = buildHTTPExecutor({
-  fetch: yoga.fetch
-})
-
 const server = createServer(yoga)
 
-export { server as default, yoga, executor }
+export { server as default, yoga  }
