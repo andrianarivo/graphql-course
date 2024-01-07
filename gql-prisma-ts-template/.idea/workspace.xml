@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b947cd37-7f2d-4aaa-bda1-104e7296b4c5" name="Changes" comment="chore: implement log">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/npm.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2XCNc1u7nMr1P9DsTg6w4Vmo3xO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "dev",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "/home/david/Documents/novity/chateo-nodejs/.github/workflows",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "/home/david/Documents/novity/chateo-nodejs/node_modules/prettier",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "/home/david/Documents/novity/chateo-nodejs/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/.github/workflows" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-c44b541a36ca-JavaScript-WS-233.13135.92" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b947cd37-7f2d-4aaa-bda1-104e7296b4c5" name="Changes" comment="" />
+      <created>1698129182497</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1698129182497</updated>
+      <workItem from="1698129186691" duration="15535000" />
+      <workItem from="1698162869065" duration="9812000" />
+      <workItem from="1698215383365" duration="3154000" />
+      <workItem from="1698252016278" duration="3051000" />
+      <workItem from="1698263269521" duration="2634000" />
+      <workItem from="1704362372026" duration="5979000" />
+      <workItem from="1704467203189" duration="6744000" />
+      <workItem from="1704478945470" duration="2340000" />
+      <workItem from="1704526307358" duration="6939000" />
+    </task>
+    <task id="LOCAL-00001" summary="chore: Install GQL with Typescript">
+      <option name="closed" value="true" />
+      <created>1698129668115</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1698129668115</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: CRUD Room">
+      <option name="closed" value="true" />
+      <created>1698145477132</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1698145477132</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: CRUD Message and Message by Room">
+      <option name="closed" value="true" />
+      <created>1698155476729</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698155476729</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: Get Me">
+      <option name="closed" value="true" />
+      <created>1698158286460</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1698158286460</updated>
+    </task>
+    <task id="LOCAL-00005" summary="chore: User in Message">
+      <option name="closed" value="true" />
+      <created>1698159479553</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698159479553</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: Message Created PubSub">
+      <option name="closed" value="true" />
+      <created>1698181180912</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1698181180912</updated>
+    </task>
+    <task id="LOCAL-00007" summary="chore: Switch to graphql-ws for PubSub">
+      <option name="closed" value="true" />
+      <created>1698184339001</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1698184339001</updated>
+    </task>
+    <task id="LOCAL-00008" summary="chore: Refactor - Adding filters to Subscriptions">
+      <option name="closed" value="true" />
+      <created>1698239886747</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698239886747</updated>
+    </task>
+    <task id="LOCAL-00009" summary="chore: Update README.md">
+      <option name="closed" value="true" />
+      <created>1698261094268</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1698261094268</updated>
+    </task>
+    <task id="LOCAL-00010" summary="chore: Update README.md and Dependencies">
+      <option name="closed" value="true" />
+      <created>1698265761647</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1698265761647</updated>
+    </task>
+    <task id="LOCAL-00011" summary="chore: Dockerisation">
+      <option name="closed" value="true" />
+      <created>1704370488090</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1704370488090</updated>
+    </task>
+    <task id="LOCAL-00012" summary="update package.json">
+      <option name="closed" value="true" />
+      <created>1704526566333</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1704526566333</updated>
+    </task>
+    <task id="LOCAL-00013" summary="refactor: Create Template for GraphQL-Prisma-TS">
+      <option name="closed" value="true" />
+      <created>1704532369110</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1704532369110</updated>
+    </task>
+    <task id="LOCAL-00014" summary="chore: implement log">
+      <option name="closed" value="true" />
+      <created>1704533885099</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1704533885099</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Install GraphQL with Express Typescript" />
+    <MESSAGE value="Install gql with typescript" />
+    <MESSAGE value="chore: Install GQL with Typescript" />
+    <MESSAGE value="feat: CRUD Room" />
+    <MESSAGE value="feat: CRUD Message and Message by Room" />
+    <MESSAGE value="feat: Get Me" />
+    <MESSAGE value="chore: User in Message" />
+    <MESSAGE value="feat: Message Created PubSub" />
+    <MESSAGE value="chore: Switch to graphql-ws for PubSub" />
+    <MESSAGE value="chore: Refactor - Adding filters to Subscriptions" />
+    <MESSAGE value="chore: Update README.md" />
+    <MESSAGE value="chore: Update README.md and Dependencies" />
+    <MESSAGE value="chore: Dockerisation" />
+    <MESSAGE value="update package.jso" />
+    <MESSAGE value="update package.json" />
+    <MESSAGE value="refactor: Create Template for GraphQL-Prisma-TS" />
+    <MESSAGE value="chore: implement log" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: implement log" />
+  </component>
+</project>
